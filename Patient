@@ -1,0 +1,238 @@
+import java.util.*;
+
+public class Patient {
+    private String firstName, lastName, allergy, vaccine, date;
+    private int age;
+    private ArrayList<Patient> patientRecords = new ArrayList<>(); // tracks all patient records, both input by the user and included in the sample data
+    private Scanner keyboard = new Scanner(System.in); // user input for chars and ints
+    private Scanner keyboardString = new Scanner(System.in); // user input for strings
+
+public Patient (String firstNameIn, String lastNameIn, int ageIn, String allergyIn, String vaccineIn, String dateIn)
+{
+    firstName = firstNameIn;
+    lastName = lastNameIn;
+    age = ageIn;
+    allergy = allergyIn;
+    vaccine = vaccineIn;
+    date = dateIn;
+}
+
+// constructor
+public Patient (){
+
+}
+
+// defining all the set() methods
+public void setPatientFirstName(String firstNameIn) {
+    firstName = firstNameIn;
+}
+
+public void setPatientLastName(String lastNameIn) {
+    lastName = lastNameIn;
+}
+
+public void setPatientAge(int ageIn) {
+    age = ageIn;
+}
+
+public void setPatientAllergy(String allergyIn) {
+    allergy = allergyIn;
+}
+
+public void setPatientVaccine(String vaccineIn) {
+    vaccine = vaccineIn;
+}
+
+public void setVaccineDate(String dateIn) {
+    date = dateIn;
+}
+
+// defining all the get() methods
+public String getPatientFirstName() {
+    return firstName;
+}
+
+public String getPatientLastName() {
+    return lastName;
+}
+
+public int getPatientAge() {
+    return age;
+}
+
+public String getPatientAllergy() {
+    return allergy;
+}
+
+public String getPatientVaccine() {
+    return vaccine;
+}
+
+public String getVaccineDate() {
+    return date;
+}
+
+public void addPatient(Patient patient) {
+    patientRecords.add(patient);
+}
+
+public void addNewPatient() {
+    System.out.print("\nPlease enter the patient's first name: ");
+    setPatientFirstName(keyboardString.next());
+    System.out.print("Please enter the patient's last name: ");
+    setPatientLastName(keyboardString.next());
+    System.out.print("Please enter the patient's age: ");
+    setPatientAge(keyboard.nextInt());
+    System.out.print("Please enter the patient's allergy (PEG/PS80/Gelatin): ");
+    setPatientAllergy(keyboardString.next());
+    System.out.print("Please enter the type of vaccine administered to the patient (AstraZeneca/Pfizer): ");
+    setPatientVaccine(keyboardString.next());
+    System.out.print("Please enter the date the vaccine was administered (MM/DD/YYYY): ");
+    setVaccineDate(keyboardString.next());
+    Patient patient = new Patient(firstName, lastName, age, allergy, vaccine, date);
+                    
+    addPatient(patient);
+
+    System.out.println("\nThank you, patient record has been added successfully!");
+}
+
+public void printVaccineAdministrations(String vaccineInput) {
+
+    int columnWidth = 12;
+
+    for (Patient patient : patientRecords) {
+        if (patient.vaccine != null && patient.vaccine.equals(vaccineInput)) {
+                System.out.printf("%-" 
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %n", patient.firstName, patient.lastName, patient.age, patient.allergy, patient.vaccine, patient.date);
+            }
+        } 
+}
+
+public int checkDoses() {
+    
+    int doseCounter = 0;
+
+    for (Patient patient : patientRecords) {
+        for (Patient patient2 : patientRecords) {
+            if (patient == patient2) {
+                doseCounter++;
+            }
+        }
+    }
+
+    return doseCounter;
+}
+
+public ArrayList<Patient> returnUniquePatients() {
+
+    ArrayList<Patient> uniquePatients = new ArrayList<>();
+
+    for (Patient patient : patientRecords) {
+        for (Patient patient2 : uniquePatients) {
+            if (patient != patient2) {
+                uniquePatients.add(patient);
+            }
+        }
+    }
+    return uniquePatients;
+}
+
+public void printIncompleteDoses() {
+    //quickSort(patients, 0, patients.size() - 1, true); // Sort by dose count
+    int columnWidth = 12;
+
+    System.out.println("\nPatients with incomplete doses: ");
+    printTableLayout();
+
+    ArrayList<Patient> uniquePatients = new ArrayList<>();
+    uniquePatients = returnUniquePatients();
+
+    for (Patient patient : uniquePatients) {
+        if (patient.checkDoses() < 3) {
+            System.out.printf("%-" 
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %n", patient.firstName, patient.lastName, patient.age, patient.allergy, patient.vaccine, patient.date);
+        }
+    }
+}
+
+// prints specific patients by name
+public void printPatientByName(String searchFirstNameIn, String searchLastNameIn) {
+
+    int columnWidth = 12;
+    printTableLayout();
+
+    String searchFirstName = searchFirstNameIn;
+    String searchLastName = searchLastNameIn;
+
+    for (Patient patient : patientRecords) {
+        
+        if (patient.firstName != null && patient.firstName.equals(searchFirstName) && patient.lastName != null && patient.lastName.equals(searchLastName)) {
+        System.out.printf("%-" 
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %n", patient.firstName, patient.lastName, patient.age, patient.allergy, patient.vaccine, patient.date);
+        }
+    }
+}
+
+// prints all patients entered into the ArrayList
+public void printAllPatients(){
+
+    int columnWidth = 12;
+    printTableLayout();
+
+    // print rows of data entered into the ArrayList
+    for (Patient patient : patientRecords) {
+        System.out.printf("%-" 
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %-"
+                + columnWidth + "s %n", patient.firstName, patient.lastName, patient.age, patient.allergy, patient.vaccine, patient.date);
+    }
+}
+
+// creates table format whenever you need to print a table
+public void printTableLayout() {
+
+    int columnWidth = 12;
+
+    // defines column headers
+    String header1 = "First name";
+    String header2 = "Last name";
+    String header3 = "Age";
+    String header4 = "Allergy";
+    String header5 = "Vaccine type";
+    String header6 = "Date";
+
+    // prints the header for the table
+    System.out.println();
+    System.out.printf("%-" 
+    + columnWidth + "s %-"
+    + columnWidth + "s %-"
+    + columnWidth + "s %-"
+    + columnWidth + "s %-"
+    + columnWidth + "s %-"
+    + columnWidth + "s %n", header1, header2, header3, header4, header5, header6);
+
+    for (int i = 0; i < columnWidth + columnWidth + columnWidth + columnWidth + columnWidth + columnWidth; i++) {
+        System.out.print("-");
+    }
+    System.out.println();
+}
+
+}
