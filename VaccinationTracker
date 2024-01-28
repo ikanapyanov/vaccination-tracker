@@ -1,0 +1,108 @@
+import java.util.*;
+
+public class VaccinationTracker {
+
+    public static void main(String[] args) {
+        Patient patient = new Patient();
+        int dose = 0; // assume every patient has received 0 doses until data is added
+
+        Scanner keyboard = new Scanner(System.in); // user input for chars and ints
+        Scanner keyboardString = new Scanner(System.in); // user input for strings
+        char choice; // tracks user input for main menu
+
+        // inserting existing sample data provided as part of assignment into an ArrayList
+        patient.addPatient(new Patient ("Georgia", "Roberts", 23, "Gelatin", "Pfizer", "06/15/2021"));
+        patient.addPatient(new Patient ("Charlie", "Smith", 40, "Gelatin", "Pfizer", "06/15/2021"));
+        patient.addPatient(new Patient ("Mariam", "Dawson", 27, "Gelatin", "Pfizer", "06/17/2021"));
+        patient.addPatient(new Patient ("Emmett", "Miller", 30, "Gelatin", "Pfizer", "06/20/2021"));
+        patient.addPatient(new Patient ("Lily", "Taylor", 18, "PEG", "AstraZeneca", "06/21/2021"));
+        patient.addPatient(new Patient ("Bill", "Harley", 70, "PS80", "AstraZeneca", "07/21/2021"));
+        patient.addPatient(new Patient ("Mariam", "Dawson", 27, "Gelatin", "Pfizer", "07/20/2021"));
+        patient.addPatient(new Patient ("Emmett", "Miller", 30, "Gelatin", "Pfizer", "07/20/2021"));
+        patient.addPatient(new Patient ("Mariam", "Dawson", 27, "Gelatin", "Pfizer", "08/19/2021"));
+
+        // main menu
+        System.out.println("\nWelcome. Please choose from the following options:");
+
+        do {
+        System.out.println("\n*****");
+            System.out.println("MAIN MENU:");
+            System.out.println("1. Enter new patient record.");
+            System.out.println("2. Search for an existing patient by last name.");
+            System.out.println("3. Generate report on patient vaccinations by vaccine type.");
+            System.out.println("4. Generate report on vaccinations administered by type.");
+            System.out.println("5. Generate report on patient allergies.");
+            System.out.println("6. Generate sorted list of patients with incomplete doses (in priority order by age).");
+            System.out.println("7. Generate sorted list of patients who have completed three doses of vaccine.");
+            System.out.println("8. Generate sorted list of elderly patients (aged 70 and above) who were given fewer than three doses of vaccine.");
+            System.out.println("9. Output all existing patient data.");
+            System.out.println("0. Exit the program.");
+            System.out.println("******");
+
+            System.out.print("\nPlease enter your choice: ");
+            choice = keyboard.next().charAt(0);
+
+            switch (choice) {
+                case '1':
+                    // allows the user to enter a new patient into the system
+                    patient.addNewPatient();
+                    break;
+
+                case '2':
+                    // searches the array patientRecords by user-defined last name and prints the result
+                    System.out.print("\nPlease enter the patient's first name: ");
+                    String searchFirstName = keyboardString.next();
+                    System.out.print("Please enter the patient's last name: ");
+                    String searchLastName = keyboardString.next();
+
+                    patient.printPatientByName(searchFirstName, searchLastName);
+                    break;
+
+                case '3':
+                    // prints a list of people who have been administered AstraZeneca and Pfizer by type
+                    System.out.print("\nPlease enter the type of vaccine (AstraZeneca/Pfizer): ");
+                    String vaccineInput = keyboardString.next();
+                    
+                    patient.printVaccineAdministrations(vaccineInput);
+                    break;
+
+                case '4':
+                    // prints a report that outputs the number of AstraZeneca and Pfizer vaccines administered by type
+                    //patient.printVaccineAdministrationsByType();
+                    break;
+                
+                case '5':
+                    // prints a report that outputs the number of allergies by type
+                    //patient.printAllergiesByType();
+                    break;
+                
+                case '6':
+                    // prints a list of patients who have not received all 3 vaccinations
+                    patient.printIncompleteDoses();
+                    break;
+
+                case '7':
+                    // prints a list of patients who have received all 3 vaccinations
+                    break;
+                
+                case '8':
+                    // prints a list of patients aged 70 and above who have not received all 3 vaccinations
+                    break;
+
+                case '9':
+                    System.out.println("\nAll stored patient data.\n");
+                    patient.printAllPatients();
+                    //xx
+                    break;
+                
+                case '0':
+                    System.out.println("\nThank you. Exiting the program.");
+                    break;
+
+                default:
+                    System.out.println("ERROR: Please enter a valid option (0-8).");
+            }
+        } while (choice != '0'); // exits the program if the user inputs '0'
+    }
+
+}
